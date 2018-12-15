@@ -174,7 +174,7 @@ public class AddLost extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        try {
+        
             // this.setVisible(false);
             // new LostnFound().setVisible(true);
             
@@ -185,22 +185,50 @@ public class AddLost extends javax.swing.JFrame {
             String dsc = desc.getText();
             String mob = contact.getText();
           //  System.out.println(MainPage.reg);
-            String sql = "insert into MiniProject.lost values ('"+MainPage.reg+"','"+name+"','"+dt+"','"+tm+"','"+pl+"','"+dsc+"','"+mob+"')";
+         PreparedStatement pstmt=null,pstmt2=null;
+             int i=0,j=0;
             
-            MSQLConnection msql = new MSQLConnection();
-            PreparedStatement pstmt = msql.conn.prepareStatement(sql);
-            int i= pstmt.executeUpdate();
-            if(i>0)
+        try {
+           
+            if(MainPage.dbcheck==false)
             {
-                JOptionPane.showMessageDialog(null, "Your Details recorded.....!!!!");
+                String sql = "insert into MiniProject.lost values ('"+MainPage.reg+"','"+name+"','"+dt+"','"+tm+"','"+pl+"','"+dsc+"','"+mob+"')";
+                String sql2 = "insert into myproject.lost values ('"+MainPage.reg+"','"+name+"','"+dt+"','"+tm+"','"+pl+"','"+dsc+"','"+mob+"')";
+                MSQLConnection msql = new MSQLConnection();
+                MSQLConn3 msql2 = new MSQLConn3();
+                pstmt = msql.conn.prepareStatement(sql);
+                pstmt2 = msql.conn.prepareStatement(sql2);
+                
+                i = pstmt.executeUpdate();
+                j = pstmt2.executeUpdate();
             }
             else
             {
-                JOptionPane.showMessageDialog(null, "ERROR.....!!!!");
+                String sql = "insert into myproject.lost values ('"+MainPage.reg+"','"+name+"','"+dt+"','"+tm+"','"+pl+"','"+dsc+"','"+mob+"')";
+                MSQLConn3 msql = new MSQLConn3();
+                pstmt = msql.conn.prepareStatement(sql);
+                
+                 i = pstmt.executeUpdate();
             }
-            } catch (SQLException ex) {
-            Logger.getLogger(AddLost.class.getName()).log(Level.SEVERE, null, ex);
+        
+        } catch (SQLException ex) {
+            Logger.getLogger(AddFound.class.getName()).log(Level.SEVERE, null, ex);
         }
+           
+        
+            if(i>0 && j>0)
+            {
+                JOptionPane.showMessageDialog(null, "Your Details recorded.....!!!!");
+            }
+            else if(i>0)
+            {
+                JOptionPane.showMessageDialog(null, "Your Details recorded on Server 3.....!!!!");
+            }
+            else 
+            {
+                JOptionPane.showMessageDialog(null, "Error.....!!!!");
+            }
+        
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void NameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NameActionPerformed

@@ -23,9 +23,15 @@ public class MainPage extends javax.swing.JFrame {
     /**
      * Creates new form MainPage
      */
+    static boolean dbcheck=false,i,j;
+    
     public MainPage() {
         initComponents();
         setLocationRelativeTo(null);
+        server3msg.setVisible(false);
+        userlogin5.setVisible(false);
+        ser3.setVisible(false);
+        
         check();
         
     }
@@ -46,9 +52,12 @@ public class MainPage extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         regfield = new javax.swing.JTextField();
         ser1 = new javax.swing.JLabel();
-        userlogin2 = new javax.swing.JLabel();
+        server3msg = new javax.swing.JLabel();
         userlogin3 = new javax.swing.JLabel();
         ser2 = new javax.swing.JLabel();
+        userlogin4 = new javax.swing.JLabel();
+        ser3 = new javax.swing.JLabel();
+        userlogin5 = new javax.swing.JLabel();
         BackgroudImage = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -102,10 +111,10 @@ public class MainPage extends javax.swing.JFrame {
         ser1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/myproject/images/icons8_Ok_30px.png"))); // NOI18N
         getContentPane().add(ser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 190, -1, -1));
 
-        userlogin2.setFont(new java.awt.Font("Segoe Print", 0, 20)); // NOI18N
-        userlogin2.setForeground(new java.awt.Color(255, 255, 255));
-        userlogin2.setText("Server Status:");
-        getContentPane().add(userlogin2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 130, 150, 30));
+        server3msg.setFont(new java.awt.Font("Segoe Print", 0, 14)); // NOI18N
+        server3msg.setForeground(new java.awt.Color(51, 255, 51));
+        server3msg.setText("Don't worry...Server 3 has been automatically started");
+        getContentPane().add(server3msg, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 330, 390, 30));
 
         userlogin3.setFont(new java.awt.Font("Segoe Print", 1, 18)); // NOI18N
         userlogin3.setForeground(new java.awt.Color(255, 255, 255));
@@ -114,6 +123,19 @@ public class MainPage extends javax.swing.JFrame {
 
         ser2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/myproject/images/icons8_Cancel_30px.png"))); // NOI18N
         getContentPane().add(ser2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 240, -1, -1));
+
+        userlogin4.setFont(new java.awt.Font("Segoe Print", 0, 20)); // NOI18N
+        userlogin4.setForeground(new java.awt.Color(255, 255, 255));
+        userlogin4.setText("Server Status:");
+        getContentPane().add(userlogin4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 130, 150, 30));
+
+        ser3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/myproject/images/icons8_Ok_30px.png"))); // NOI18N
+        getContentPane().add(ser3, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 290, -1, -1));
+
+        userlogin5.setFont(new java.awt.Font("Segoe Print", 1, 18)); // NOI18N
+        userlogin5.setForeground(new java.awt.Color(255, 255, 255));
+        userlogin5.setText("Server 3");
+        getContentPane().add(userlogin5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 290, 90, 30));
 
         BackgroudImage.setBackground(new java.awt.Color(51, 51, 51));
         BackgroudImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/myproject/images/Mnnit-background.jpg"))); // NOI18N
@@ -132,11 +154,13 @@ public class MainPage extends javax.swing.JFrame {
           //  System.out.println("Server1..1");
             URL urlpath= getClass().getResource("images/icons8_Ok_30px.png"); 
             ser1.setIcon(new ImageIcon(urlpath));
+            i=true;
         }
         else
         {
             URL urlpath= getClass().getResource("images/icons8_Cancel_30px.png"); 
             ser1.setIcon(new ImageIcon(urlpath));
+            i=false;
         }
         MSQLConn2 msql2 = new MSQLConn2();
         if(msql2.check2)
@@ -144,11 +168,20 @@ public class MainPage extends javax.swing.JFrame {
           //  System.out.println("Server1..2");
              URL urlpath= getClass().getResource("images/icons8_Ok_30px.png"); 
              ser2.setIcon(new ImageIcon(urlpath));
+             j=true;
         }
         else
         {
             URL urlpath= getClass().getResource("images/icons8_Cancel_30px.png"); 
             ser2.setIcon(new ImageIcon(urlpath));
+            j=false;
+        }
+        if(i==false || j == false)
+        {
+            dbcheck=true;
+            server3msg.setVisible(true);
+            userlogin5.setVisible(true);
+            ser3.setVisible(true);
         }
     }
     private void AdminBlockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdminBlockActionPerformed
@@ -170,7 +203,8 @@ public class MainPage extends javax.swing.JFrame {
         try {
             // TODO add your handling code here:
             reg = regfield.getText();
-            
+            if(!dbcheck)
+            {
             String sql = "select Name from studentinfo where RegNo='"+reg+"'";
             MSQLConn2 msql2 = new MSQLConn2();
             
@@ -192,7 +226,33 @@ public class MainPage extends javax.swing.JFrame {
                  dispose();
                  dsh.setVisible(true);
             }
+            }
+            else
+            {
                 
+                String sql = "select Name from myproject.student where RegNo='"+reg+"'";
+            MSQLConn3 msql3 = new MSQLConn3();
+            
+            PreparedStatement pstmt = msql3.conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+        //    System.out.println(rs);
+            while(rs.next())
+                resName = rs.getString("Name");
+            
+        //    System.out.println(resName);
+            if(resName==null)
+            {
+               // System.out.println("Not found");
+                JOptionPane.showMessageDialog(null, "You are not a valid user please contact administrator");
+            }
+            else
+            {
+                 Dashboard dsh = new Dashboard();
+                 dispose();
+                 dsh.setVisible(true);
+            }
+                
+            }
             resName=null;
         } catch (SQLException ex) {
             Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
@@ -243,9 +303,12 @@ public class MainPage extends javax.swing.JFrame {
     private javax.swing.JTextField regfield;
     private javax.swing.JLabel ser1;
     private javax.swing.JLabel ser2;
+    private javax.swing.JLabel ser3;
+    private javax.swing.JLabel server3msg;
     private javax.swing.JLabel userlogin;
     private javax.swing.JLabel userlogin1;
-    private javax.swing.JLabel userlogin2;
     private javax.swing.JLabel userlogin3;
+    private javax.swing.JLabel userlogin4;
+    private javax.swing.JLabel userlogin5;
     // End of variables declaration//GEN-END:variables
 }

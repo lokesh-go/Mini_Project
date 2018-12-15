@@ -27,9 +27,12 @@ public class ShowData extends javax.swing.JFrame {
         if(LostnFound.lost)
         {
             jTextField1.setText("Lost Item List");
-            String sql ="select * from MiniProject.lost";
-            MSQLConnection msql = new MSQLConnection();
             try {
+            
+               if(MainPage.dbcheck==false)
+               {
+                String sql ="select * from MiniProject.lost";
+                MSQLConnection msql = new MSQLConnection();
                 PreparedStatement pstmt = msql.conn.prepareStatement(sql);
                 ResultSet rs = pstmt.executeQuery();
                 
@@ -44,18 +47,11 @@ public class ShowData extends javax.swing.JFrame {
                    String g = rs.getString("Contact");
                    model.addRow(new Object[]{a,b,c,d,e,f,g});
                 }
-            } catch (SQLException ex) {
-                Logger.getLogger(ShowData.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-        }
-        else if(LostnFound.found)
-        {
-            jTextField1.setText("Found Item List");
-           
-            String sql ="select * from MiniProject.found";
-            MSQLConnection msql = new MSQLConnection();
-            try {
+               }
+               else
+               {
+                String sql ="select * from myproject.lost";
+                MSQLConn3 msql = new MSQLConn3();
                 PreparedStatement pstmt = msql.conn.prepareStatement(sql);
                 ResultSet rs = pstmt.executeQuery();
                 
@@ -69,6 +65,58 @@ public class ShowData extends javax.swing.JFrame {
                    String f = rs.getString("Description");
                    String g = rs.getString("Contact");
                    model.addRow(new Object[]{a,b,c,d,e,f,g});
+                }
+               }
+            } catch (SQLException ex) {
+                Logger.getLogger(ShowData.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
+        else if(LostnFound.found)
+        {
+            jTextField1.setText("Found Item List");
+           
+            try {
+                
+                if(MainPage.dbcheck==false)
+                {
+                String sql ="select * from MiniProject.found";
+                MSQLConnection msql = new MSQLConnection();
+            
+                PreparedStatement pstmt = msql.conn.prepareStatement(sql);
+                ResultSet rs = pstmt.executeQuery();
+                
+                while(rs.next())
+                {
+                   String a = rs.getString("RegNo");
+                   String b = rs.getString("Name");
+                   String c = rs.getString("Date");
+                   String d = rs.getString("Time");
+                   String e = rs.getString("Place");
+                   String f = rs.getString("Description");
+                   String g = rs.getString("Contact");
+                   model.addRow(new Object[]{a,b,c,d,e,f,g});
+                }
+                }
+                else
+                {
+                String sql ="select * from myproject.found";
+                MSQLConn3 msql = new MSQLConn3();
+            
+                PreparedStatement pstmt = msql.conn.prepareStatement(sql);
+                ResultSet rs = pstmt.executeQuery();
+                
+                while(rs.next())
+                {
+                   String a = rs.getString("RegNo");
+                   String b = rs.getString("Name");
+                   String c = rs.getString("Date");
+                   String d = rs.getString("Time");
+                   String e = rs.getString("Place");
+                   String f = rs.getString("Description");
+                   String g = rs.getString("Contact");
+                   model.addRow(new Object[]{a,b,c,d,e,f,g});
+                }
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(ShowData.class.getName()).log(Level.SEVERE, null, ex);
