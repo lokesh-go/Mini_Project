@@ -7,3 +7,4 @@
 - Place: Lucknow, Uttar Pradesh, INDIA.
 - Bio: Designer.
 - GitHub: [POORVI MALAVIYA](https://github.com/poorvi7)
+- Contribute to this project: GUI Designer.
