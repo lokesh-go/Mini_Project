@@ -179,6 +179,9 @@ public class AddFound extends javax.swing.JFrame {
         new LostnFound().setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    
+    // Database connetivity code written by Lokesh Chandra
+    
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 //        this.setVisible(false);
 //        new LostnFound().setVisible(true);
